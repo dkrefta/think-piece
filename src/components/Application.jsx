@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { collectIdsAndDocs } from '../utilities'
+import { collectIdsAndDocs } from "../utilities";
 import { firestore } from "../firebase";
 
 import Posts from "./Posts";
@@ -22,19 +22,27 @@ class Application extends Component {
 
   handleCreate = async post => {
     const { posts } = this.state;
-    
-    const docRef = await firestore.collection('posts').add(post)
+
+    const docRef = await firestore.collection("posts").add(post);
 
     const doc = await docRef.get();
 
     const newPost = collectIdsAndDocs(doc);
 
-    this.setState({ 
-      posts: 
-      [ 
-        newPost, 
-        ...posts
-      ]});
+    this.setState({
+      posts: [newPost, ...posts]
+    });
+  };
+
+  handleRemove = async id => {
+    const allPosts = this.state.posts;
+
+    await firestore.doc(`posts/${id}`).delete();
+    
+    const posts = allPosts.filter(post => post.id !== id);
+    this.setState({
+      posts
+    });
   };
 
   render() {
@@ -43,7 +51,11 @@ class Application extends Component {
     return (
       <main className="Application">
         <h1>Think Piece</h1>
-        <Posts posts={posts} onCreate={this.handleCreate} />
+        <Posts
+          posts={posts}
+          onCreate={this.handleCreate}
+          onRemove={this.handleRemove}
+        />
       </main>
     );
   }
