@@ -8,7 +8,7 @@ const Authentication = ({ user, loading }) => {
 
   return (
     <div>
-      { user ? <CurrentUser /> : <SignInAndSignUp /> }
+      { user ? <CurrentUser{...user} /> : <SignInAndSignUp /> }
     </div>
   )
 };
