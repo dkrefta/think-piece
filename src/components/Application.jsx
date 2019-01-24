@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { collectIdsAndDocs } from "../utilities";
 import { firestore } from "../firebase";
-
+import Authentication from './Authentication'
 import Posts from "./Posts";
 
 class Application extends Component {
   state = {
-    posts: []
+    posts: [],
+    user: null,
   };
 
   unsubscribe = null;
@@ -24,24 +25,15 @@ class Application extends Component {
     this.unsubscribe();
   };
 
-  handleCreate = async post => {
-    firestore.collection("posts").add(post);
-  };
-
-  handleRemove = async id => {
-  firestore.doc(`posts/${id}`).delete();
-  };
-
   render() {
-    const { posts } = this.state;
+    const { posts, user } = this.state;
 
     return (
       <main className="Application">
         <h1>Think Piece</h1>
+        <Authentication user={user}/>
         <Posts
           posts={posts}
-          onCreate={this.handleCreate}
-          onRemove={this.handleRemove}
         />
       </main>
     );
