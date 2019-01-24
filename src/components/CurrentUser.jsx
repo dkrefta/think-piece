@@ -1,10 +1,9 @@
 import React from 'react';
-
+import { signOutWithGoogle } from '../firebase'
 import moment from 'moment';
 
 const CurrentUser = ({ displayName, photoURL, email, createdAt, children }) => {
-  return (
-    <section className="CurrentUser">
+  return <section className="CurrentUser">
       <div className="CurrentUser--profile">
         {photoURL && <img src={photoURL} alt={displayName} />}
         <div className="CurrentUser--information">
@@ -15,10 +14,9 @@ const CurrentUser = ({ displayName, photoURL, email, createdAt, children }) => {
       </div>
       <div>
         <div>{children}</div>
-        <button>Sign Out</button>
+        <button onClick={signOutWithGoogle}>Sign Out</button>
       </div>
-    </section>
-  );
+    </section>;
 };
 
 CurrentUser.defaultProps = {
